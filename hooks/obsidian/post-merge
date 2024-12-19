@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# 获取当前的Git用户名
+GIT_USER=$(git config user.name)
+
+# 检查是否存在 .obsidian_<git 用户名> 目录
+if [ -d ".obsidian_$GIT_USER" ]; then
+    # 重命名回 .obsidian
+    mv .obsidian_$GIT_USER .obsidian
+fi

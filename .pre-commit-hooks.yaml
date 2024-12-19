@@ -1,0 +1,15 @@
+- id: obsidian-pre-commit
+  name: obsidian-pre-commit
+  description: 将 .obsidian 单独提出来作为一次提交
+  entry: ./hooks/obsidian/pre-commit
+  language: script
+- id: obsidian-pre-push
+  name: obsidian-pre-push
+  description: 在push前将 .obsidian 重命名为 .obsidian_<git username>
+  entry: ./hooks/obsidian/pre-push
+  language: script
+- id: obsidian-post-merge
+  name: obsidian-post-merge
+  description: 在 pull 时恢复 .obsidian 目录名称
+  entry: ./hooks/obsidian/post-merge
+  language: script

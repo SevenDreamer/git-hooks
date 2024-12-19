@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# 检查是否有需要提交的文件在 .obsidian 目录下
+if git diff --cached --name-only | grep -q '^.obsidian/'; then
+    # 创建一个临时目录来存放 .obsidian 的文件
+    TEMP_OBSIDIAN=$(mktemp -d)
+
+    # 移动 .obsidian 下的文件到临时目录
+    git diff --cached --name-only | grep '^.obsidian/' | while read file; do
+        mv "$file" "$TEMP_OBSIDIAN"
+        git reset HEAD "$file"
+    done
+
+    # 提交除了 .obsidian 之外的其他文件
+    git commit -m "Commit without .obsidian changes"
+
+    # 移动文件回 .obsidian 并添加到缓存区
+    mv "$TEMP_OBSIDIAN"/* .obsidian/
+    git add .obsidian
+
+    # 提交 .obsidian 的更改
+    git commit -m "Separate commit for .obsidian changes"
+
+    # 删除临时目录
+    rm -rf "$TEMP_OBSIDIAN"
+fi

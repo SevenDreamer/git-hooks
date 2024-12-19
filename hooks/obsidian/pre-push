@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# 获取当前的Git用户名
+GIT_USER=$(git config user.name)
+
+# 查找最后一次提交的信息
+LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+
+# 如果最后一次提交是关于 .obsidian 的
+if [[ $LAST_COMMIT_MSG == "Separate commit for .obsidian changes" ]]; then
+    # 重命名 .obsidian 为 .obsidian_<git 用户名>
+    git filter-branch --tree-filter '
+        if [ -d ".obsidian" ]; then
+            mv .obsidian .obsidian_'$GIT_USER'
+        fi
+    ' HEAD
+fi
